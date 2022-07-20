@@ -46,7 +46,7 @@ public class AuthAction extends ActionBase {
         //セッションにフラッシュメッセージが登録されている場合はリクエストスコープに設定する
         String flush = getSessionScope(AttributeConst.FLUSH);
         if (flush != null) {
-            putRequestScope(AttributeConst.FLUSH,flush);
+            putRequestScope(AttributeConst.FLUSH, flush);
             removeSessionScope(AttributeConst.FLUSH);
         }
 
@@ -96,6 +96,25 @@ public class AuthAction extends ActionBase {
             //ログイン画面を表示
             forward(ForwardConst.FW_LOGIN);
         }
+        }
+
+        /**
+         * ログアウト処理を行う
+         * @throws ServletException
+         * @throws IOException
+         */
+        public void logout() throws ServletException, IOException{
+
+            //セッションからログイン従業員のパラメータを削除
+            removeSessionScope(AttributeConst.LOGIN_EMP);
+
+            //セッションにログアウト時のフラッシュメッセージを追加
+            putSessionScope(AttributeConst.FLUSH,MessageConst.I_LOGOUT.getMessage());
+
+            //ログイン画面にリダイレクト
+            redirect(ForwardConst.ACT_AUTH, ForwardConst.CMD_SHOW_LOGIN);
+
+
     }
 
 }
